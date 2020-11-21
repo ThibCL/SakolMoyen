@@ -4,21 +4,37 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class ClientMovement : MonoBehaviour {
-    public Transform player;
+    public GameObject player;
     public NavMeshAgent agent;
-    public float waitDistance;
+    public GameObject seat;
+    public float clickDistance = 10;
+    public float waitDistance = 5;
 
-    public bool follow = false;
+    private void Start() {
+        agent.enabled = false;
+    }
 
     void Update() {
-        if (follow) {
-            var waitPos = Vector3.ClampMagnitude(player.position - transform.position, waitDistance);
-            agent.SetDestination(player.position - waitPos);
+        if (agent.enabled) {
+            var waitPos = Vector3.ClampMagnitude(player.transform.position - transform.position, waitDistance);
+            agent.SetDestination(player.transform.position - waitPos);
         }
     }
 
+    public void FollowUnfollow() {
+        agent.enabled = !agent.enabled;
+    }
+
     private void OnMouseDown() {
-        Debug.Log("Click");
-        follow = !follow;
+
+        var dist = Vector3.Distance(transform.position, player.transform.position);
+        if (dist < clickDistance) {
+            Debug.Log("Click");
+            if (seat) {
+                seat.GetComponent<Seat>().clientSeated = null;
+                seat = null;
+            }
+            player.GetComponent<PlayerMovement>().GetFollowed(this.gameObject);
+        }
     }
 }

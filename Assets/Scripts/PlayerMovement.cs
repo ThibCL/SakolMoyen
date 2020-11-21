@@ -10,7 +10,8 @@ public class PlayerMovement : MonoBehaviour {
     Vector3 velocity;
     public float gravity = -9.81f;
 
-    bool isGrounded;
+    public GameObject client;
+
     void Update() {
 
         if (controller.isGrounded && velocity.y < 0) {
@@ -26,5 +27,19 @@ public class PlayerMovement : MonoBehaviour {
 
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
+    }
+
+    public void GetFollowed(GameObject obj) {
+        if (client) {
+            client.GetComponent<ClientMovement>().FollowUnfollow();
+
+            var tmpPos = client.transform.position;
+            client.transform.position = obj.transform.position;
+            obj.transform.position = tmpPos;
+
+        }
+
+        client = obj;
+        client.GetComponent<ClientMovement>().FollowUnfollow();
     }
 }

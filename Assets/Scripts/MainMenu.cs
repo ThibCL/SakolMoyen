@@ -8,11 +8,11 @@ public class MainMenu : MonoBehaviour {
     public GameObject clientsGroup;
 
     public System.Tuple<List<string>, List<string>>[] setups = {
-        System.Tuple.Create(new List<string> { "C1" }, new List<string> { "C2" }),
-        System.Tuple.Create( new List<string> { "C4" },  new List<string> { "C3" }),
-        System.Tuple.Create( new List<string> { "C5" },  new List<string> { "C6" }),
-        System.Tuple.Create( new List<string> { "C8" },  new List<string> { "C7" }),
-        System.Tuple.Create( new List<string> { "C9" },  new List<string> { "C10" })
+        System.Tuple.Create(new List<string> { "Sport","Fashion" }, new List<string> { "Art","TV","Money" }),
+        System.Tuple.Create( new List<string> { "Drug","Sexe","Money","Alcool" },  new List<string> { "Sexe" }),
+        System.Tuple.Create( new List<string> { "Fashion","Art","Drug" },  new List<string> { "Money","Sport" }),
+        System.Tuple.Create( new List<string> { "TV","Money" },  new List<string> { "Fashion","Art","Drug" }),
+        System.Tuple.Create( new List<string> { "Art","Fashion" },  new List<string> { "Sexe","Alcool" })
     };
 
     private void Start() {

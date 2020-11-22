@@ -12,34 +12,40 @@ public class PlayerMovement : MonoBehaviour {
 
     public GameObject client;
 
+    public GameObject reticle;
+
     void Update() {
+        if (reticle.activeSelf) {
+            float x = Input.GetAxis("Horizontal");
+            float z = Input.GetAxis("Vertical");
+
+            Vector3 move = transform.right * x + transform.forward * z;
+            controller.Move(move * speed * Time.deltaTime);
+        }
 
         if (controller.isGrounded && velocity.y < 0) {
             velocity.y = -2f;
         }
 
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
-
-        Vector3 move = transform.right * x + transform.forward * z;
-
-        controller.Move(move * speed * Time.deltaTime);
-
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
     }
 
-    public void GetFollowed(GameObject obj) {
+    public void GetFollowed(ClientMovement obj) {
         if (client) {
+            Debug.Log("client");
             client.GetComponent<ClientMovement>().FollowUnfollow();
-
-            var tmpPos = client.transform.position;
-            client.transform.position = obj.transform.position;
-            obj.transform.position = tmpPos;
+            obj.seat.GetComponent<Seat>().GetSeat(client);
+        } else {
+            Debug.Log("no Client");
+            obj.seat.GetComponent<Seat>().clientSeated = null;
+            obj.seat.GetComponent<Seat>().date.ComputeMatch();
+            obj.seat = null;
 
         }
 
-        client = obj;
+
+        client = obj.gameObject;
         client.GetComponent<ClientMovement>().FollowUnfollow();
     }
 }

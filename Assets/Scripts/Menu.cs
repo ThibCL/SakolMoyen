@@ -9,15 +9,17 @@ public class Menu : MonoBehaviour {
     public GameObject client;
     public GameObject player;
     public TextMeshProUGUI text;
+    public Text nameT;
     public GameObject swapButton;
 
     private void Update() {
         swapButton.SetActive(client.GetComponent<ClientMovement>().seat != null);
     }
 
-    public void Print(List<string> characs, int startMatch, int actualMatch) {
+    public void Print(List<string> characs, int startMatch, int actualMatch, string name) {
 
-        text.text += startMatch + " -> " + actualMatch + " \n";
+        nameT.text = name;
+        text.text += "Before: " + startMatch + " Now: " + actualMatch + " \n \n";
 
         foreach (var charac in characs) {
             text.text += charac;

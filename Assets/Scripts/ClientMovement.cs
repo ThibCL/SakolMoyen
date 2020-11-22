@@ -7,12 +7,14 @@ public class ClientMovement : MonoBehaviour {
     public Animator anim;
 
 
+    public string playerName;
     public Menu menu;
     public GameObject player;
     public NavMeshAgent agent;
     public GameObject seat;
     public float clickDistance = 10;
     public float waitDistance = 5;
+    public float waitPosDist = 3;
 
     public List<string> characteristics;
     public int matchStart;
@@ -28,7 +30,7 @@ public class ClientMovement : MonoBehaviour {
             anim.SetBool("Sit", !agent.enabled);
             var waitPos = Vector3.ClampMagnitude(player.transform.position - transform.position, waitDistance);
             agent.SetDestination(player.transform.position - waitPos);
-            if (agent.remainingDistance < 0.1) {
+            if (agent.remainingDistance < waitPosDist) {
                 anim.SetBool("Wait", true);
             } else {
                 anim.SetBool("Wait", false);
@@ -48,7 +50,7 @@ public class ClientMovement : MonoBehaviour {
         var dist = Vector3.Distance(transform.position, player.transform.position);
         if (dist < clickDistance && !menu.gameObject.activeSelf) {
             Debug.Log("Click");
-            menu.Print(characteristics, matchStart, actualMatch);
+            menu.Print(characteristics, matchStart, actualMatch, playerName);
             menu.gameObject.SetActive(true);
             menu.client = gameObject;
             menu.reticle.OnOffReticle();

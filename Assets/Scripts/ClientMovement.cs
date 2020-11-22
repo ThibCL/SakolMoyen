@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class ClientMovement : MonoBehaviour {
+    public Animator anim;
+
+
     public Menu menu;
     public GameObject player;
     public NavMeshAgent agent;
@@ -17,12 +20,22 @@ public class ClientMovement : MonoBehaviour {
 
     private void Start() {
         agent.enabled = false;
+        Debug.Log("Start " + anim.name);
     }
 
     void Update() {
         if (agent.enabled) {
+            anim.SetBool("Sit", !agent.enabled);
             var waitPos = Vector3.ClampMagnitude(player.transform.position - transform.position, waitDistance);
             agent.SetDestination(player.transform.position - waitPos);
+            if (agent.remainingDistance < 0.1) {
+                anim.SetBool("Wait", true);
+            } else {
+                anim.SetBool("Wait", false);
+            }
+        } else {
+            anim.SetBool("Sit", !agent.enabled);
+            anim.SetInteger("Match", actualMatch - matchStart);
         }
     }
 
